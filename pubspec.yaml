@@ -32,7 +32,6 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.6.1 # For state management
   hive: ^2.2.3 # For local storage
-  flutter_credit_card: ^4.0.1 # For card scanning and UI
 
 
   # The following adds the Cupertino Icons font to your application.
