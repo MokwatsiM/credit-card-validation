@@ -23,22 +23,6 @@ class CreditCardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: ElevatedButton(
-        onPressed: () {
-          onSaveCardDetails(ref, context);
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.colorB58D67,
-          textStyle: const TextStyle(color: Colors.white),
-          minimumSize: Size(MediaQuery.of(context).size.width - 20, 50),
-        ),
-        child: const Text(
-          'Save card details',
-          style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
-        ),
-      ),
       appBar: AppBar(
         backgroundColor: AppColors.colorF9EED2,
         title: const Text('Credit Card Capture'),
@@ -98,6 +82,23 @@ class CreditCardScreen extends ConsumerWidget {
                   countryController: countryController,
                   expiryDateController: expiryDateController,
                   cvvController: cvvController),
+              ElevatedButton(
+                onPressed: () {
+                  onSaveCardDetails(ref, context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.colorB58D67,
+                  textStyle: const TextStyle(color: Colors.white),
+                  minimumSize: Size(MediaQuery.of(context).size.width - 20, 50),
+                ),
+                child: const Text(
+                  'Save card details',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
             ],
           ),
         ),
