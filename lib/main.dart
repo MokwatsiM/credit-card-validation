@@ -13,7 +13,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDir = await getApplicationDocumentsDirectory();
 
-
   final hiveStoragePath = Directory('${appDocumentDir.path}/hive_data');
 
   // Initialize Hive with a custom path
@@ -42,9 +41,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Credit Card Capture App',
-      // theme: ThemeData(
-      //   primaryColor: AppColors.colorE5D1B2,
-      // ),
       home: CreditCardScreen(),
       onGenerateRoute: (settings) {
         switch (settings.name) {

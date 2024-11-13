@@ -22,7 +22,7 @@ class CreditCardsListScreen extends ConsumerWidget {
       ),
       body: savedCards.isNotEmpty
           ? Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Center(
                 child: CarouselSlider(
                   items: savedCards
