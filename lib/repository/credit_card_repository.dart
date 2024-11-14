@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 
 class CreditCardRepository {
+  CreditCardRepository() {
+    loadBlockedCountries();
+  }
   final Box<CreditCardDataModel> _creditCardBox = Hive.box('creditCards');
   List<String> bannedCountries = [];
 
