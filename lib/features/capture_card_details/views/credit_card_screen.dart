@@ -1,13 +1,14 @@
 import 'package:credit_card_storage_system/features/capture_card_details/widgets/card_widget_form.dart';
 import 'package:credit_card_storage_system/utils/appcolors.dart';
-import 'package:credit_card_storage_system/viewmodel/credit_card_notifier_viewmodel.dart';
+import 'package:credit_card_storage_system/blocs/credit_card_bloc.dart';
+import 'package:credit_card_storage_system/blocs/credit_card_event.dart';
 import 'package:credit_card_storage_system/common/widgets/credit_card_widget_template.dart';
+import 'package:credit_card_storage_system/utils/infer_card_type_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card_scanner/credit_card.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CreditCardScreen extends ConsumerWidget {
+class CreditCardScreen extends StatelessWidget {
   final TextEditingController cardNumberController = TextEditingController();
   final TextEditingController cardHolderNameController =
       TextEditingController();
@@ -21,7 +22,7 @@ class CreditCardScreen extends ConsumerWidget {
   CreditCardScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.colorF9EED2,
@@ -41,18 +42,20 @@ class CreditCardScreen extends ConsumerWidget {
                 final results = await Navigator.pushNamed(context, '/scanner');
                 if (results is CreditCardModel) {
                   results;
-                  ref
-                      .read(creditCardStateProvider.notifier)
-                      .updateCardHolderName((results).holderName);
-                  ref
-                      .read(creditCardStateProvider.notifier)
-                      .updateCardNumber((results).number);
-                  ref
-                      .read(creditCardStateProvider.notifier)
-                      .updateExpiryDate((results).expiryDate);
-                  ref
-                      .read(creditCardStateProvider.notifier)
-                      .updateCardType((results).number.trim());
+                  if (context.mounted) {
+                    context
+                        .read<CreditCardBloc>()
+                        .add(UpdateCardNumber((results).number));
+                    context
+                        .read<CreditCardBloc>()
+                        .add(UpdateCardHolderName((results).holderName));
+                    context
+                        .read<CreditCardBloc>()
+                        .add(UpdateExpiryDate((results).expiryDate));
+                    context
+                        .read<CreditCardBloc>()
+                        .add(UpdateCardType((results).number.trim()));
+                  }
 
                   cardHolderNameController.text = (results).holderName;
                   cardNumberController.text = (results).number.trim();
@@ -84,7 +87,7 @@ class CreditCardScreen extends ConsumerWidget {
                   cvvController: cvvController),
               ElevatedButton(
                 onPressed: () {
-                  onSaveCardDetails(ref, context);
+                  onSaveCardDetailsUsingBloc(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.colorB58D67,
@@ -106,20 +109,18 @@ class CreditCardScreen extends ConsumerWidget {
     );
   }
 
-  void onSaveCardDetails(WidgetRef ref, BuildContext context) {
+  void onSaveCardDetailsUsingBloc(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      final widgetRef = ref.read(creditCardStateProvider.notifier);
-      //
-      widgetRef.updateCardType(cardNumberController.text);
-      widgetRef.toggleShowBackView();
+      final state = context.read<CreditCardBloc>();
+      state.add(ToggleCardView());
+      state.add(UpdateCardType(cardNumberController.text.inferCardType));
+      state.add(AddCard());
 
-      widgetRef.addCard();
-
-      if (widgetRef.errorMessage.isNotEmpty) {
+      if (state.errorMessage.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(widgetRef.errorMessage)),
+          SnackBar(content: Text(context.read<CreditCardBloc>().errorMessage)),
         );
-        widgetRef.clearErrorMessage();
+        context.read<CreditCardBloc>().add(ClearErrorMessage());
       } else {
         cvvController.clear();
         cardHolderNameController.clear();
