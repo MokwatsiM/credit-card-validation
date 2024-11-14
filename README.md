@@ -4,13 +4,16 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project has two branches which uses two state management tools <br />
+1) [dev Branch](https://github.com/MokwatsiM/credit-card-validation/tree/dev) <br/>
+2) [dev-bloc Branch] (https://github.com/MokwatsiM/credit-card-validation/tree/dev-bloc)
 
-A few resources to get you started if this is your first Flutter project:
+```dart
+dart run build_runner build
+flutter packages get
+```
+The Project allows capturing of credit card details manually and by scanning using the device camera. <br/>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Note:
+1) to access the camera top right on the app bar there is two icons use the camera icon
+2) to access the list of cards top right on the app bar icon next to the camera will show all saved credit cards
