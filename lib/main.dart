@@ -4,8 +4,10 @@ import 'package:credit_card_storage_system/features/credit_card_scanner.dart';
 import 'package:credit_card_storage_system/models/credit_card_model.dart';
 import 'package:credit_card_storage_system/features/capture_card_details/views/credit_card_screen.dart';
 import 'package:credit_card_storage_system/features/list_card_details/views/credit_cards_list_screen.dart';
+import 'package:credit_card_storage_system/repository/credit_card_repository.dart';
+import 'package:credit_card_storage_system/blocs/credit_card_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -25,13 +27,14 @@ void main() async {
     await Hive.openBox<CreditCardDataModel>('creditCards');
   }
 
-  // if (!Hive.isBoxOpen('creditCards')) {
-  //   Hive.init(hiveStoragePath.path);
-  //   Hive.registerAdapter(CreditCardModelAdapter());
-  //   await Hive.openBox<CreditCardModel>('creditCards');
-  // }
-
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => CreditCardRepository()),
+      ],
+      child: BlocProvider(
+          create: (context) =>
+              CreditCardBloc(context.read<CreditCardRepository>()),
+          child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {
