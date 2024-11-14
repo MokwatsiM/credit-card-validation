@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card_scanner/credit_card.dart';
 import 'package:flutter_credit_card_scanner/credit_card_scanner.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CreditCardScanner extends ConsumerStatefulWidget {
+class CreditCardScanner extends StatefulWidget {
   const CreditCardScanner({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CreditCardScannerState();
+  State<StatefulWidget> createState() => _CreditCardScannerState();
 }
 
-class _CreditCardScannerState extends ConsumerState<CreditCardScanner> {
+class _CreditCardScannerState extends State<CreditCardScanner> {
   bool scanFinished = false;
 
   @override
