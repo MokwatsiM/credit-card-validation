@@ -6,7 +6,7 @@ A new Flutter project.
 
 This project has two branches which uses two state management tools <br />
 1) [dev Branch](https://github.com/MokwatsiM/credit-card-validation/tree/dev) <br/>
-2) [dev-bloc Branch] (https://github.com/MokwatsiM/credit-card-validation/tree/dev-bloc)
+2) [dev-bloc Branch](https://github.com/MokwatsiM/credit-card-validation/tree/dev-bloc)
 
 ```dart
 dart run build_runner build
